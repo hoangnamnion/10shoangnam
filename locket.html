@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>CAO VĂN NAM</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --pink: #ec4899;
+  --pink-dark: #db2777;
+  --bg-white: #ffffff;
+  --bg-light: #f8fafc;
+  --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #fdf2f8 100%);
+  --card-bg: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
+  --success: #10b981;
+  --error: #ef4444;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 25px rgba(59, 130, 246, 0.1);
+  --radius: 16px;
+  --radius-lg: 20px;
+  --radius-sm: 12px;
+  --transition: all 0.25s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-white);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Main Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: var(--bg-gradient);
+}
+
+/* Logo */
+.logo {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.logo-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, var(--primary), var(--pink));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 42px;
+  margin: 0 auto 20px;
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.logo-text {
+  font-size: 32px;
+  font-weight: 800;
+  background: linear-gradient(to right, var(--primary), var(--pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 8px;
+}
+
+.logo-subtitle {
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Buttons Container */
+.buttons-container {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* Main Button */
+.main-btn {
+  width: 100%;
+  padding: 26px;
+  border: none;
+  border-radius: var(--radius-lg);
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.main-btn:active {
+  transform: translateY(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.main-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(255,255,255,0.15), transparent);
+  pointer-events: none;
+}
+
+/* Config Button */
+.config-btn {
+  background: linear-gradient(135deg, var(--primary), var(--pink));
+}
+
+.config-btn:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--pink-dark));
+}
+
+/* App Button */
+.app-btn {
+  background: linear-gradient(135deg, #000000, #333333);
+}
+
+.app-btn:hover {
+  background: linear-gradient(135deg, #333333, #666666);
+}
+
+/* Button Icons */
+.btn-icon {
+  font-size: 26px;
+}
+
+/* Info Text */
+.info-text {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-top: 10px;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  padding: 18px 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 200;
+  opacity: 0;
+  transition: var(--transition);
+  max-width: 90%;
+  width: fit-content;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast-success {
+  border-left: 5px solid var(--success);
+}
+
+.toast-error {
+  border-left: 5px solid var(--error);
+}
+
+.toast-icon {
+  font-size: 20px;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding-top: 30px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: 400px;
+  margin-top: 30px;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .logo-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
+  }
+  
+  .logo-text {
+    font-size: 28px;
+  }
+  
+  .main-btn {
+    padding: 24px;
+    font-size: 18px;
+  }
+  
+  .btn-icon {
+    font-size: 24px;
+  }
+}
+
+@media (max-height: 700px) {
+  .logo {
+    margin-bottom: 40px;
+  }
+  
+  .buttons-container {
+    margin-bottom: 30px;
+  }
+}
+</style>
+</head>
+
+<body>
+<!-- Main Container -->
+<div class="container">
+  <!-- Logo -->
+  <div class="logo">
+    <div class="logo-icon">
+      <i class="fas fa-crown"></i>
+    </div>
+    <div class="logo-text">CAO VĂN NAM</div>
+    <div class="logo-subtitle">LOCKET VIP - NÂNG GOLD 15s</div>
+  </div>
+
+  <!-- Buttons Container -->
+  <div class="buttons-container">
+    <!-- Config Button -->
+    <button class="main-btn config-btn" id="configBtn">
+      <i class="fas fa-download btn-icon"></i>
+      TẢI CẤU HÌNH VIP
+    </button>
+    
+    <!-- Info Text for Config -->
+    <div class="info-text">
+      Cấu hình DNS NextDNS cho LOCKET VIP - NÂNG GOLD chỉ trong 15s
+    </div>
+
+    <!-- App Button -->
+    <button class="main-btn app-btn" id="appBtn">
+      <i class="fab fa-apple btn-icon"></i>
+      TẢI APP VPN
+    </button>
+    
+    <!-- Info Text for App -->
+    <div class="info-text">
+      Ứng dụng USA VPN Private Fast - VPN tốc độ cao, bảo mật tuyệt đối
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2024 CAO VĂN NAM - LOCKET VIP</p>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle toast-icon" id="toastIcon"></i>
+  <span id="toastMessage">Thông báo</span>
+</div>
+
+<script>
+// DOM Elements
+const configBtn = document.getElementById('configBtn');
+const appBtn = document.getElementById('appBtn');
+const toast = document.getElementById('toast');
+const toastMessage = document.getElementById('toastMessage');
+const toastIcon = document.getElementById('toastIcon');
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+  setupEventListeners();
+});
+
+// Event Listeners
+function setupEventListeners() {
+  // Download config button
+  configBtn.addEventListener('click', downloadConfig);
+  
+  // Open App Store button
+  appBtn.addEventListener('click', () => {
+    window.open('https://apps.apple.com/us/app/usa-vpn-private-fast/id6475051414', '_blank');
+    showToast('Đang mở App Store...', 'success');
+  });
+}
+
+// Download config file
+function downloadConfig() {
+  // Show loading
+  const originalBtnText = configBtn.innerHTML;
+  configBtn.innerHTML = '<div class="spinner"></div> ĐANG TẢI...';
+  configBtn.disabled = true;
+  
+  // Mobileconfig content
+  const configContent = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>PayloadDisplayName</key>
+    <string>LOCKET VIP ( CAO VĂN NAM )</string>
+    <key>PayloadDescription</key>
+    <string>NÂNG LOCKET GOLD 15s</string>
+    <key>PayloadIdentifier</key>
+    <string>io.nextdns.abf777.profile</string>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>A1E2F262-DB73-40F6-BD22-2E42A43A3C94.abf777</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadContent</key>
+    <array>
+      <dict>
+        <key>DNSSettings</key>
+        <dict>
+          <key>DNSProtocol</key>
+          <string>HTTPS</string>
+          <key>ServerURL</key>
+          <string>https://apple.dns.nextdns.io/abf777</string>
+        </dict>
+        <key>OnDemandRules</key>
+        <array>
+          <dict>
+            <key>Action</key>
+            <string>EvaluateConnection</string>
+            <key>ActionParameters</key>
+            <array>
+              <dict>
+                <key>DomainAction</key>
+                <string>NeverConnect</string>
+                <key>Domains</key>
+                <array>
+                  <string>captive.apple.com</string>
+                  <string>dav.orange.fr</string>
+                  <string>vvm.mobistar.be</string>
+                  <string>vvm.mstore.msg.t-mobile.com</string>
+                  <string>tma.vvm.mone.pan-net.eu</string>
+                  <string>vvm.ee.co.uk</string>
+                </array>
+              </dict>
+            </array>
+          </dict>
+          <dict>
+            <key>Action</key>
+            <string>Connect</string>
+          </dict>
+        </array>
+        <key>PayloadType</key>
+        <string>com.apple.dnsSettings.managed</string>
+        <key>PayloadIdentifier</key>
+        <string>io.nextdns.abf777.profile.dnsSettings.managed</string>
+        <key>PayloadUUID</key>
+        <string>A1E2F262-DB73-40F6-BD22-2E42A43A3C94.abf777.dnsSettings.managed</string>
+        <key>PayloadDisplayName</key>
+        <string>LOCKET VIP ( CAO VĂN NAM )</string>
+        <key>PayloadOrganization</key>
+        <string>NextDNS</string>
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+      </dict>
+    </array>
+  </dict>
+</plist>`;
+
+  // Create download link
+  const blob = new Blob([configContent], { type: 'application/x-apple-aspen-config' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'LOCKET-VIP-CAO-VAN-NAM.mobileconfig';
+  
+  // Trigger download
+  document.body.appendChild(a);
+  a.click();
+  
+  // Cleanup
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    // Restore button
+    configBtn.innerHTML = originalBtnText;
+    configBtn.disabled = false;
+    
+    // Show success message
+    showToast('Đã tải cấu hình LOCKET VIP!', 'success');
+  }, 500);
+}
+
+// Toast notification
+function showToast(message, type = 'success') {
+  // Set toast content and style
+  toastMessage.textContent = message;
+  toast.className = 'toast';
+  toast.classList.add(`toast-${type}`);
+  
+  // Set icon based on type
+  if (type === 'success') {
+    toastIcon.className = 'fas fa-check-circle';
+  } else {
+    toastIcon.className = 'fas fa-exclamation-circle';
+  }
+  
+  // Show toast
+  toast.classList.add('show');
+  
+  // Hide after 3 seconds
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+</script>
+</body>
+</html>
